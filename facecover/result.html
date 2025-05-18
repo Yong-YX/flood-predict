@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Forecast Result</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-blue-50 p-8">
+  <h1 class="text-2xl font-bold mb-4">Forecast for {{ weather_data.city }}</h1>
+  <h2 class="text-xl font-semibold mt-6 mb-2">3 days 24-Hour Flood Risk Forecast</h2>
+  <table style="width: 50%">
+    <table class="table-auto w-full bg-white rounded shadow">
+      <thead class="bg-blue-100">
+        <tr>
+          <th class="px-4 py-2">Time</th>
+          <th class="px-4 py-2">Weather</th>
+          <th class="px-4 py-2">Temperature</th> 
+          <th class="px-4 py-2">Sea Level (hPa)</th>
+          <th class="px-4 py-2">Flood Risk</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entry in forecast_list %}
+        <tr class="text-center {% if entry.risk == 'High' %}bg-red-100{% elif entry.risk == 'Moderate' %}bg-yellow-100{% else %}bg-green-100{% endif %}">
+          <td class="border px-4 py-2">{{ entry.time }}</td>
+          <td class="border px-4 py-2">{{ entry.weather }}</td>
+          <td class="border px-4 py-2">{{ entry.temp }}</td>
+          <td class="border px-4 py-2">{{ entry.sea_level }}</td>
+          <td class="border px-4 py-2 font-bold">{{ entry.risk }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </table>
+</body>
+<body>
+  <div class="mt-6">
+    {% if high_risk_times %}
+      <div class="bg-red-100 p-4 rounded shadow text-red-800 font-semibold">
+        High risk detected at: {{ high_risk_times | join(', ') }}
+      </div>
+    {% else %}
+      <div class="bg-blue-100 p-4 rounded shadow text-blue-800 font-semibold">
+        Majority flood risk level next 3 days: {{ majority_risk }}
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
